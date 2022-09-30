@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Product list</title>
+
+  <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+  <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+
+
+  <script src="/webjars/jquery/jquery.min.js"></script>
+  <script src="/product.js"></script>
+
+</head>
+<body>
+<div th:insert="~{fragments/menu :: #nav-menu}"></div>
+
+<table border="1" align="center" id="table">
+  <tr>
+    <td>Title</td>
+    <td>Price</td>
+    <td></td>
+  </tr>
+  <tr th:each="product : ${products}">
+    <td th:text="${product.title}">Cheese</td>
+    <td th:text="${product.price}">12.0</td>
+    <td><a th:href="@{/products/{id}/bucket (id=${product.id})}">Add to bucket</a></td>
+  </tr>
+</table>
+
+<form style="text-align: center">
+  <table align="center">
+    <tr>
+      <td>Title</td>
+      <td><input type="text" id="title"></td>
+    </tr>
+    <tr>
+      <td>Price</td>
+      <td><input type="number" id="price"></td>
+    </tr>
+  </table>
+  <button id="send" type="submit">Submit</button>
+</form>
+
+</body>
+</html>
