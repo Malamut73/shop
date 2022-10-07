@@ -2,10 +2,7 @@ package com.online.shop.domain;
 
 
 import com.online.shop.domain.enums.Role;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -15,6 +12,8 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "users")
+@ToString
+
 public class User {
 
     private static final String SEQ_NAME = "user_seq";

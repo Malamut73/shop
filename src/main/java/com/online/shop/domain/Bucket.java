@@ -1,9 +1,6 @@
 package com.online.shop.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,6 +11,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "bucket")
+@ToString
 public class Bucket {
 
     private static final String SEQ_NAME = "bucket_seq";
