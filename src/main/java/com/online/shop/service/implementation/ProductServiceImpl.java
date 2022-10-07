@@ -63,6 +63,11 @@ public class ProductServiceImpl implements ProductService {
         simpMessagingTemplate.convertAndSend("/topic/products", ProductMapper.MAPPER.fromProduct(savedProduct));
     }
 
+    @Override
+    public ProductDTO getById(Long id) {
+        Product product = productDAO.findById(id).orElse(new Product());
+        return ProductMapper.MAPPER.fromProduct(product);
+    }
 
 
 

@@ -8,4 +8,5 @@ public interface ProductService {
     List<ProductDTO> getAll();
     void addToUserBucket(Long productId, String username);
     void addProduct(ProductDTO productDTO);
+    ProductDTO getById(Long id);
 }

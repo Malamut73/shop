@@ -58,6 +58,7 @@ public class UserController {
         }
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile")
     public String profileUser(Model model,
                               Principal principal){
@@ -74,6 +75,7 @@ public class UserController {
         return "profile";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/profile")
     public String updateProfileUser(UserDTO userDTO,
                                     Model model,

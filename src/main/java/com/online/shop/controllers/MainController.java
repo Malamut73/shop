@@ -27,7 +27,7 @@ public class MainController {
             httpSession.setAttribute("myId", uuid);
             System.out.println("Generated UUID ->" + uuid);
         }
-        model.addAttribute("amountClicks", sessionObjectHolder.getAmountClicks());
+//        model.addAttribute("amountClicks", sessionObjectHolder.getAmountClicks());
         model.addAttribute("uuid", httpSession.getAttribute("myId"));
         return "index";
     }

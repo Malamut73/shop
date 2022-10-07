@@ -2,12 +2,12 @@ package com.online.shop.service.implementation;
 
 import com.online.shop.dao.BucketDAO;
 import com.online.shop.dao.ProductDAO;
-import com.online.shop.domain.Bucket;
-import com.online.shop.domain.Product;
-import com.online.shop.domain.User;
+import com.online.shop.domain.*;
+import com.online.shop.domain.enums.OrderStatus;
 import com.online.shop.dto.BucketDTO;
 import com.online.shop.dto.BucketDetailDTO;
 import com.online.shop.service.BucketService;
+import com.online.shop.service.OrderService;
 import com.online.shop.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,14 +25,17 @@ public class BucketServiceImpl implements BucketService {
     private final BucketDAO bucketDAO;
     private final ProductDAO productDAO;
     private final UserService userService;
+    private final OrderService orderService;
 
-    public BucketServiceImpl(BucketDAO bucketDAO, ProductDAO productDAO, UserService userService) {
+    public BucketServiceImpl(BucketDAO bucketDAO, ProductDAO productDAO, UserService userService, OrderService orderService) {
         this.bucketDAO = bucketDAO;
         this.productDAO = productDAO;
         this.userService = userService;
+        this.orderService = orderService;
     }
 
     @Transactional
+    @javax.transaction.Transactional
     public Bucket createBucket(User user, List<Long> productIds) {
         Bucket bucket = new Bucket();
         bucket.setUser(user);
@@ -41,6 +44,14 @@ public class BucketServiceImpl implements BucketService {
         return bucketDAO.save(bucket);
     }
 
+    private List<Product> getCollectRefProductsByIds(List<Long> productIds) {
+        return productIds.stream()
+                .map(productDAO::getOne)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @javax.transaction.Transactional
     public void addProducts(Bucket bucket, List<Long> productIds) {
         List<Product> products = bucket.getProducts();
         List<Product> newProductList = products == null ? new ArrayList<>() : new ArrayList<>(products);
@@ -49,6 +60,7 @@ public class BucketServiceImpl implements BucketService {
         bucketDAO.save(bucket);
     }
 
+    @Override
     public BucketDTO getBucketByUser(String name) {
         User user = userService.findByName(name);
         if(user == null || user.getBucket() == null){
@@ -75,10 +87,42 @@ public class BucketServiceImpl implements BucketService {
         return bucketDTO;
     }
 
-    private List<Product> getCollectRefProductsByIds(List<Long> productIds) {
-        return productIds.stream()
-                .map(productDAO::getOne)
+    @Override
+    @Transactional
+    public void commitBucketToOrder(String username) {
+        User user = userService.findByName(username);
+        if(user == null){
+            throw new RuntimeException("User is not found");
+        }
+        Bucket bucket = user.getBucket();
+        if(bucket == null || bucket.getProducts().isEmpty()){
+            return;
+        }
+
+        Order order = new Order();
+        order.setStatus(OrderStatus.NEW);
+        order.setUser(user);
+
+        Map<Product, Long> productWithAmount = bucket.getProducts().stream()
+                .collect(Collectors.groupingBy(product -> product, Collectors.counting()));
+
+        List<OrderDetails> orderDetails = productWithAmount.entrySet().stream()
+                .map(pair -> new OrderDetails(order, pair.getKey(), pair.getValue()))
                 .collect(Collectors.toList());
+
+        BigDecimal total = new BigDecimal(orderDetails.stream()
+                .map(detail -> detail.getPrice().multiply(detail.getAmount()))
+                .mapToDouble(BigDecimal::doubleValue).sum());
+
+        order.setDetails(orderDetails);
+        order.setSum(total);
+        order.setAddress("none");
+
+        orderService.saveOrder(order);
+        bucket.getProducts().clear();
+        bucketDAO.save(bucket);
     }
+
+
 
 }

@@ -29,6 +29,8 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Override
+    @javax.transaction.Transactional
     public boolean save(UserDTO userDTO) {
         if (!Objects.equals(userDTO.getPassword(), userDTO.getMatchPassword())) {
             throw new RuntimeException("Password is not equals");
