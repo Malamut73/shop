@@ -17,6 +17,6 @@ public class ShopApplication {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-
+//дбдбцп
 
 }
