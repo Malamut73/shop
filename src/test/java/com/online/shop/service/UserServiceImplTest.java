@@ -7,6 +7,7 @@ import com.online.shop.service.implementation.UserServiceImpl;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
+import org.springframework.mail.MailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
@@ -16,6 +17,7 @@ class UserServiceImplTest {
     private UserServiceImpl userService;
     private PasswordEncoder passwordEncoder;
     private UserDAO userDAO;
+    private MailSenderService mailSenderService;
 
     @BeforeAll
     static void beforeAll() {
@@ -27,6 +29,7 @@ class UserServiceImplTest {
         System.out.println("Before each test");
         passwordEncoder = Mockito.mock(PasswordEncoder.class);
         userDAO = Mockito.mock(UserDAO.class);
+        mailSenderService = Mockito.mock(MailSenderService.class);
 
         userService = new UserServiceImpl(userDAO, passwordEncoder);
     }

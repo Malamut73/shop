@@ -3,4 +3,13 @@ spring:
     hibernate:
       ddl-auto: create
   datasource:
-    url: jdbc:h2:~/test;AUTO_SERVER=TRUE
+    url: jdbc:h2:~/test2;AUTO_SERVER=TRUE
+server:
+  hostname: localhost
+  port: ${PORT:8080}
+mail:
+  server:
+    host: smtp.gmail.com
+    port: 587
+    username: unknown@gmail.com
+    password: unknown

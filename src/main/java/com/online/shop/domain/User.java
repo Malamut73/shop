@@ -13,7 +13,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users")
 @ToString
-
 public class User {
 
     private static final String SEQ_NAME = "user_seq";
@@ -30,5 +29,7 @@ public class User {
     private Role role;
     @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
     private Bucket bucket;
+    @Column(name = "activate_code")
+    private String activeCode;
 
 }

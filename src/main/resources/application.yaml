@@ -9,4 +9,13 @@ spring:
     password: lemoor@mail.ru
   flyway:
     baseline-on-migration: true
+server:
+  hostname: localhost
+  port: ${PORT:8080}
+mail:
+  server:
+    host: smtp.gmail.com
+    port: 587
+    username:
+    password:
 

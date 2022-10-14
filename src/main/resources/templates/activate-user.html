@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+</head>
+<body>
+<div th:insert="~{fragments/menu :: #nav-menu}"></div>
+
+<p th:if="${activated}">Your user is activated</p>
+<p th:if="${!activated}">Your user is not activated. Please try again</p>
+
+</body>
+</html>

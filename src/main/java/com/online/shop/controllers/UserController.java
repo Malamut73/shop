@@ -32,7 +32,6 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/new")
     public String newUser(Model model){
-        System.out.println("called method newUser");
         model.addAttribute("user", new UserDTO());
         return "user";
     }
@@ -48,8 +47,6 @@ public class UserController {
 
     @PostMapping("/new")
     public String saveUser(UserDTO userDTO, Model model){
-        System.out.println("We've entered in a controller");
-
         if(userService.save(userDTO)){
             return "redirect:/users";
         }else{
@@ -92,6 +89,14 @@ public class UserController {
 
         userService.updateProfile(userDTO);
         return "redirect:/users/profile";
+    }
+
+
+    @GetMapping("/activate/{code}")
+    public String activateUser(Model model, @PathVariable("code") String activateCode){
+        boolean activated = userService.activateUser(activateCode);
+        model.addAttribute("activated", activated);
+        return "activate-user";
     }
 
 }

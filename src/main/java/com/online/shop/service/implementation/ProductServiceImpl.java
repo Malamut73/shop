@@ -34,6 +34,7 @@ public class ProductServiceImpl implements ProductService {
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
+
     public List<ProductDTO> getAll() {
         return mapper.fromProductList(productDAO.findAll());
     }

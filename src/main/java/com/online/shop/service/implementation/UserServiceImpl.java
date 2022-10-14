@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,6 +41,7 @@ public class UserServiceImpl implements UserService {
                 .password(passwordEncoder.encode(userDTO.getPassword()))
                 .email(userDTO.getEmail())
                 .role(Role.CLIENT)
+                .activeCode(UUID.randomUUID().toString())
                 .build();
         userDAO.save(user);
         return true;
@@ -82,6 +84,17 @@ public class UserServiceImpl implements UserService {
             userDAO.save(savedUser);
         }
 
+    }
+
+    @Override
+    public boolean activateUser(String activateCode) {
+        User user = userDAO.findFirstByActiveCode(activateCode);
+        if(user == null){
+            return false;
+        }
+        return true;
+//TODO
+        // надо очистить поле activateCode
     }
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
