@@ -31,7 +31,7 @@ class UserServiceImplTest {
         userDAO = Mockito.mock(UserDAO.class);
         mailSenderService = Mockito.mock(MailSenderService.class);
 
-        userService = new UserServiceImpl(userDAO, passwordEncoder);
+        userService = new UserServiceImpl(userDAO, passwordEncoder, mailSenderService);
     }
 
     @AfterEach

@@ -15,7 +15,8 @@ server:
 mail:
   server:
     host: smtp.gmail.com
-    port: 587
-    username:
-    password:
+    port: 465
+    username: remartvspb@gmail.com
+    password: bwivsizunqvdpxbk
+    protocol: smtps
 

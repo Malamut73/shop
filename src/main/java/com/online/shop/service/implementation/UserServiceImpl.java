@@ -4,6 +4,7 @@ import com.online.shop.dao.UserDAO;
 import com.online.shop.domain.User;
 import com.online.shop.domain.enums.Role;
 import com.online.shop.dto.UserDTO;
+import com.online.shop.service.MailSenderService;
 import com.online.shop.service.UserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,10 +25,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserDAO userDAO;
     private final PasswordEncoder passwordEncoder;
+    private final MailSenderService mailSenderService;
 
-    public UserServiceImpl(UserDAO userDAO, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserDAO userDAO, PasswordEncoder passwordEncoder, MailSenderService mailSenderService) {
         this.userDAO = userDAO;
         this.passwordEncoder = passwordEncoder;
+        this.mailSenderService = mailSenderService;
     }
 
     @Override
@@ -44,6 +47,7 @@ public class UserServiceImpl implements UserService {
                 .activeCode(UUID.randomUUID().toString())
                 .build();
         userDAO.save(user);
+        mailSenderService.sendActivateCode(user);
         return true;
     }
 
@@ -92,9 +96,9 @@ public class UserServiceImpl implements UserService {
         if(user == null){
             return false;
         }
+        user.setActiveCode(null);
+        userDAO.save(user);
         return true;
-//TODO
-        // надо очистить поле activateCode
     }
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -19,6 +19,8 @@ public class MailConfig {
     private String username;
     @Value("${mail.server.password}")
     private String password;
+    @Value("${mail.server.protocol}")
+    private String protocol;
 
     @Bean
     public JavaMailSender mailSender(){
@@ -30,7 +32,7 @@ public class MailConfig {
         mailSender.setPassword(password);
 
         Properties props = mailSender.getJavaMailProperties();
-        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.transport.protocol", protocol);
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable","true");
         props.put("mail.debug", "true");

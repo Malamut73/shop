@@ -20,6 +20,8 @@ public class MailSenderServiceImpl implements MailSenderService {
     private int port;
     @Value("${server.hostname}")
     private String hostname;
+    @Value("${mail.server.username}")
+    private String username;
 
 
 
@@ -35,7 +37,7 @@ public class MailSenderServiceImpl implements MailSenderService {
 
     private void sendMail(String email, String subject, String content){
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("test@bolshakov.pro");
+        message.setFrom(username);
         message.setTo(email);
         message.setSubject(subject);
         message.setText(content);
