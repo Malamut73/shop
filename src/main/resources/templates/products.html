@@ -13,6 +13,10 @@
 
 </head>
 <body>
+
+
+<div id="app">Method dont work</div>
+
 <div th:insert="~{fragments/menu :: #nav-menu}"></div>
 
 <table border="1" align="center" id="table">
@@ -27,16 +31,15 @@
     <td><a th:href="@{/products/{id}/bucket (id=${product.id})}">Add to bucket</a></td>
   </tr>
 </table>
-
-<form style="text-align: center">
+<form th:method="post" style="text-align: center">
   <table align="center">
     <tr>
       <td>Title</td>
-      <td><input type="text" id="title"></td>
+      <td><input type="text" id="title" name="title"></td>
     </tr>
     <tr>
       <td>Price</td>
-      <td><input type="number" id="price"></td>
+      <td><input type="number" id="price" name="price"></td>
     </tr>
   </table>
   <button id="send" type="submit">Submit</button>
